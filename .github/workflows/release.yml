@@ -1,0 +1,81 @@
+# =============================================================================
+# Cyberfortress Intelligent SOC Ecosystem - Release Workflow
+# Triggers on version tags (v*) pushed via scripts/release.sh
+# =============================================================================
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get the previous tag
+          PREVIOUS_TAG=$(git tag --sort=-version:refname | grep -v "^${{ steps.version.outputs.tag }}$" | head -n1)
+          
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "No previous tag found, generating full changelog"
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          else
+            echo "Generating changelog from $PREVIOUS_TAG to ${{ steps.version.outputs.tag }}"
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges "$PREVIOUS_TAG".."${{ steps.version.outputs.tag }}")
+          fi
+          
+          # Write to file for multiline output
+          echo "$CHANGELOG" > changelog.txt
+          
+          # Set output using delimiter
+          {
+            echo 'changelog<<EOF'
+            cat changelog.txt
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Release ${{ steps.version.outputs.tag }}"
+          tag_name: ${{ steps.version.outputs.tag }}
+          body: |
+            ## Cyberfortress Intelligent SOC Ecosystem ${{ steps.version.outputs.tag }}
+
+            ### What's Changed
+            ${{ steps.changelog.outputs.changelog }}
+
+            ---
+            
+            ### Resources
+            - [Documentation](https://github.com/Cyberfortress-Labs/Cyberfortress-Intelligent-SOC-Ecosystem/tree/main/docs)
+            - [Landing Page](https://cyberfortress-labs.github.io/Cyberfortress-Intelligent-SOC-Ecosystem/)
+            
+            **Full Changelog**: https://github.com/Cyberfortress-Labs/Cyberfortress-Intelligent-SOC-Ecosystem/compare/${{ env.PREVIOUS_TAG }}...${{ steps.version.outputs.tag }}
+          draft: false
+          prerelease: ${{ contains(steps.version.outputs.version, 'RC') || contains(steps.version.outputs.version, 'beta') || contains(steps.version.outputs.version, 'alpha') }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PREVIOUS_TAG: ${{ steps.changelog.outputs.previous_tag }}
