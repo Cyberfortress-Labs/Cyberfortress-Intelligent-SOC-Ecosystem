@@ -69,7 +69,7 @@ jobs:
             
             ### Resources
             - [Documentation](https://github.com/Cyberfortress-Labs/Cyberfortress-Intelligent-SOC-Ecosystem/tree/main/docs)
-            - [Landing Page](https://cyberfortress-labs.github.io/Cyberfortress-Intelligent-SOC-Ecosystem/)
+            - [Landing Page](https://cyberfortress-labs.github.io/)
             
             **Full Changelog**: https://github.com/Cyberfortress-Labs/Cyberfortress-Intelligent-SOC-Ecosystem/compare/${{ env.PREVIOUS_TAG }}...${{ steps.version.outputs.tag }}
           draft: false
