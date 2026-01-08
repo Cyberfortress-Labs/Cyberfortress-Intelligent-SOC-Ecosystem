@@ -94,6 +94,35 @@ SmartXDR is the intelligent SOC ecosystem core designed as the central brain orc
 - **Reporting**: Extracts and aggregates classified log events to generate administrative reports, distributed via Email/Telegram and Webhook.
 - **Assistant**: AI Security Assistant combining LLM with Advanced RAG using Two-Stage Retrieval (Bi-encoder & Cross-encoder).
 
+## System Demo
+
+Watch the Intelligent SOC Ecosystem in action through real-world attack scenarios:
+
+| Scenario               | Description                                          | MITRE ATT&CK | Demo                                  |
+| ---------------------- | ---------------------------------------------------- | ------------ | ------------------------------------- |
+| C2 Outbound Connection | Malware in disguised PDF establishes C2 beacon       | T1071.001    | [Watch](https://youtu.be/XWCobYtvlBE) |
+| SQL Injection Attack   | SQLi exploitation against DVWA behind WAF            | T1190        | [Watch](https://youtu.be/ajynzGKljqE) |
+| SMB Brute-force        | NTLM authentication brute-force for lateral movement | T1110.003    | [Watch](https://youtu.be/9ECwOKesfUM) |
+| Malware Execution      | Wazuh detects and removes malware via VirusTotal     | T1204        | [Watch](https://youtu.be/_wuKYfO0x_4) |
+| SmartXDR ChatOps       | AI-powered incident analysis via Telegram            | -            | [Watch](https://youtu.be/2qiM6oSsuOg) |
+
+## Performance Metrics
+
+| KPI                         | Value        | Notes                                |
+| --------------------------- | ------------ | ------------------------------------ |
+| MTTD (Mean Time to Detect)  | 5-30 seconds | Near real-time detection             |
+| MTTR (Mean Time to Respond) | 1-3 minutes  | With automated playbooks             |
+| False Alert Reduction       | ~25-30%      | After ML classification              |
+| Detection Accuracy          | ~92%         | Events detected with correct context |
+
+## Resources
+
+| Resource            | Link                                                                                                         |
+| ------------------- | ------------------------------------------------------------------------------------------------------------ |
+| GitHub Organization | [Cyberfortress-Labs](https://github.com/Cyberfortress-Labs)                                                  |
+| YouTube Playlist    | [Watch All Demos](https://www.youtube.com/playlist?list=PLshy_4RvrXflyh76ppECu-9yAvTgE2h3d)                  |
+| Google Drive        | [Additional Resources](https://drive.google.com/drive/folders/1TnPI0jEuVOhzjaLv8Pt6tsFN6O2h-dR9?usp=sharing) |
+
 ## Project Team
 
 - **Lai Quan Thien** - [WanThinnn](https://github.com/WanThinnn)
